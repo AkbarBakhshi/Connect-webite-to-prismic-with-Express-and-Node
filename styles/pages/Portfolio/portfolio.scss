@@ -1,0 +1,12 @@
+.portfolio {
+    margin-top: 2rem;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.portfolio__image {
+    width: 800px;
+    margin: 10px 0;
+}

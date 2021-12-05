@@ -1,0 +1,11 @@
+extends ../index.pug
+
+block variables
+    - var template = 'home'
+
+block content
+    .home
+        h1.home__welcome=home.welcome_text
+        a.home__youtube__channel__link(href='https://www.youtube.com/channel/UCRy8-Ju28H8VMRf2yWioGUg' target='_blank')
+            img.home__subscribe__image(alt=home.home_image.alt src=home.home_image.url)
+        a.home__go__to__about__link(href=link({type:'about'})) go to about

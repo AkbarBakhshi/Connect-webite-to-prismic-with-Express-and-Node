@@ -1,0 +1,10 @@
+extends ../index.pug
+
+block variables
+    - var template = 'portfolio'
+
+block content
+    .portfolio
+        .portfolio__title!=PrismicDOM.RichText.asHtml(portfolio.title)
+        .portfolio__description!=PrismicDOM.RichText.asHtml(portfolio.description)
+        image.portfolio__image(alt=portfolio.image.alt src=portfolio.image.url)
