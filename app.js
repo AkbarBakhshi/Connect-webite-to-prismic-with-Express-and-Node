@@ -4,8 +4,10 @@ const logger = require('morgan')
 const express = require('express')
 const errorHandler = require('errorhandler')
 
+
+const fetch = require('node-fetch')
 const Prismic = require('@prismicio/client')
-const PrismicDOM = require('prismic-dom')
+const PrismicH = require('@prismicio/helpers')
 
 const uaParser = require('ua-parser-js')
 
@@ -27,9 +29,10 @@ app.set('view engine', 'pug')
 // Initialize the prismic.io api
 
 const initApi = (req) => {
-  return Prismic.getApi(process.env.PRISMIC_ENDPOINT, {
+  return Prismic.createClient(process.env.PRISMIC_ENDPOINT, {
     accessToken: process.env.PRISMIC_ACCESS_TOKEN,
-    req: req
+    req,
+    fetch
   })
 }
 
@@ -57,56 +60,38 @@ app.use((req, res, next) => {
   res.locals.isTablet = ua.device.type === 'tablet'
 
   res.locals.link = linkResolver
-  // add PrismicDOM in locals to access them in templates.
-  res.locals.PrismicDOM = PrismicDOM;
+
+  res.locals.PrismicH = PrismicH
   next()
 })
 
 //=======================All the routes - these can have their own file/folder========================
-app.get('/', (req, res) => {
-  // const api = await initApi(req)
-  // const home = await api.getSingle('home')
+app.get('/', async (req, res) => {
+  const api = await initApi(req)
+  const home = await api.getSingle('home')
 
-  // // console.log(home.data)
-  // res.render('pages/home', {home: home.data})
+  res.render('pages/home', { home: home.data })
 
-  initApi(req).then(api => {
-    api.query(
-      Prismic.Predicates.at('document.type', 'home')
-    ).then(response => {
-      // response is the response object. Render your views here.
-      // console.log(response.results[0].data)
-      res.render('pages/home', { home: response.results[0].data })
-    })
-  })
 
 })
 
 app.get('/about', async (req, res) => {
-  initApi(req).then(api => {
-    api.query(
-      Prismic.Predicates.at('document.type', 'about')
-    ).then(response =>  {
-      // response is the response object. Render your views here.
-      // console.log(response.results[0].data.portfolio)
-      res.render('pages/about', { portfolioItems: response.results[0].data.portfolio})
-    })
-  })
+
+  const api = await initApi(req)
+  const about = await api.getSingle('about')
+
+  res.render('pages/about', { portfolioItems: about.data.portfolio })
+
 })
 
 app.get('/about/:uid', async (req, res) => {
-  initApi(req).then(api => {
-    api.getByUID('portfolio_item', req.params.uid
-    ).then(response =>  {
-      // response is the response object. Render your views here.
-      console.log(response)
-      if(response) {
-        res.render('pages/portfolio', {portfolio: response.data})
-      } else {
-        res.render('pages/Four04')
-      }
-    })
-  })
+  try {
+    const api = await initApi(req)
+    const portfolio = await api.getByUID('portfolio_item', req.params.uid)
+    res.render('pages/portfolio', { portfolio: portfolio.data })
+  } catch (err) {
+    res.render('pages/Four04')
+  }
 })
 
 //=====================================Undefined routes error handling==================

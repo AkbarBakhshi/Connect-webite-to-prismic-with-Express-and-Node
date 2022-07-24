@@ -40,12 +40,14 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@prismicio/client": "^5.1.0",
+    "@prismicio/client": "^6.6.2",
+    "@prismicio/helpers": "^2.3.2",
     "dotenv": "^10.0.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "gsap": "^3.8.0",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.7",
     "prismic-dom": "^2.2.6",
     "pug": "^3.0.2",
     "ua-parser-js": "^1.0.2"

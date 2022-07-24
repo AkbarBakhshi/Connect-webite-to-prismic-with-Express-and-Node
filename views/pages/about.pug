@@ -27,5 +27,5 @@ block content
         .about__content__portfolio 
             each portfolio in portfolioItems
                 a.about__content__portfolio__title(href=link({type:'portfolio', uid:portfolio.uid}))=portfolio.portfolio_title
-                .about__content__portfolio__description!=PrismicDOM.RichText.asHtml(portfolio.portfolio_description)
+                .about__content__portfolio__description!=PrismicH.asHTML(portfolio.portfolio_description)
                 image.about__content__portfolio__image(alt=portfolio.portfolio_image.alt src=portfolio.portfolio_image.url)

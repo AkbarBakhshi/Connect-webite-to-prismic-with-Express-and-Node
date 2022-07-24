@@ -5,6 +5,6 @@ block variables
 
 block content
     .portfolio
-        .portfolio__title!=PrismicDOM.RichText.asHtml(portfolio.title)
-        .portfolio__description!=PrismicDOM.RichText.asHtml(portfolio.description)
+        .portfolio__title!=PrismicH.asHTML(portfolio.title)
+        .portfolio__description!=PrismicH.asHTML(portfolio.description)
         image.portfolio__image(alt=portfolio.image.alt src=portfolio.image.url)
